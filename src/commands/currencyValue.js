@@ -2,6 +2,11 @@ const Discord = require("discord.js");
 const { fetchCurrencyValue } = require("../utils/api");
 const { cry } = require("../utils/helper");
 
+const img = {
+  EUR: 'https://i.imgur.com/VlUDHKs.png',
+  USD: 'https://i.imgur.com/jiZoxa9.png'
+}
+
 /**
  * currencyValue
  * @param {String} coins 'USD-BRL' - 'EUR-BRL'
@@ -15,7 +20,7 @@ const currencyValue = async (coins, key, msg) => {
     const embed = new Discord.MessageEmbed()
       .setColor("#34d400")
       .setTitle(`**${cry[Math.floor(Math.random() * cry.length)]}**`)
-      .setThumbnail("https://i.imgur.com/VlUDHKs.png")
+      .setThumbnail(img[key])
       .addField(
         `Valores`,
         `*Compra:* R$ ${data[key].bid}
