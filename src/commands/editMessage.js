@@ -1,4 +1,5 @@
-const { Message } = require("../models");
+const { Message } = require('../models')
+const { isDM } = require('../utils/helper')
 
 /**
  * editMessage
@@ -6,36 +7,40 @@ const { Message } = require("../models");
  * @param {Message} msg Objeto da mensagem captada pelo robô
  */
 const editMessage = async (payload, msg) => {
-  if (!payload) {
-    return false;
-  }
+	if (!payload) {
+		return false
+	}
 
-  if (msg.channel.type !== "dm") {
-    msg.delete();
-  }
+	if (isDM(msg)) {
+		msg.delete()
+	}
 
-  const regexId = /(^\d+)/
+	const regexId = /(^\d+)/
 
-  if (!regexId.test(payload)) {
-    msg.author.send(`🤔 Não esqueça de passar o ID do recado!`);
-  }
+	if (!regexId.test(payload)) {
+		msg.author.send(`:thinking: Não esqueça de passar o ID do recado!`)
+	}
 
-  const user = msg.author.username;
+	const user = msg.author.username
 
-  const parsePayload = payload.match(regexId);
+	const parsePayload = payload.match(regexId)
 
-  const id = parseInt(parsePayload[1]);
-  const value = payload.replace(`${id} `, "");
+	if (isNaN(Number(parsePayload[1]))) {
+		msg.author.send(`:thinking: O ID do recado é sempre numérico!`)
+	}
 
-  try {
-    await Message.update({ value }, { where: { id } });
-    msg.author.send(`👍 Recado editado!`);
-  } catch (err) {
-    console.log(err)
-    msg.author.send(
-      `😬 Não consegui editar o recado, ${user}. Espere um pouquinho e tente novamente.`
-    );
-  }
-};
+	const id = parseInt(parsePayload[1])
+	const value = payload.replace(`${id} `, '')
 
-module.exports = editMessage;
+	try {
+		await Message.update({ value }, { where: { id } })
+		msg.author.send(`:thumbsup: Recado editado!`)
+	} catch (err) {
+		console.log(err)
+		msg.author.send(
+			`:grimacing: Não consegui editar o recado, ${user}. Espere um pouquinho e tente novamente.`
+		)
+	}
+}
+
+module.exports = editMessage

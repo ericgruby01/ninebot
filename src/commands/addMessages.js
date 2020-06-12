@@ -1,4 +1,5 @@
-const { Message } = require("../models");
+const { Message } = require('../models')
+const { deleteMessage } = require('../utils/helper')
 
 /**
  * addMessages
@@ -6,30 +7,29 @@ const { Message } = require("../models");
  * @param {Message} msg Objeto da mensagem captada pelo robô
  */
 const addMessages = async (payload, msg) => {
-  if (!payload) {
-    return false;
-  }
+	if (!payload) {
+		return false
+	}
 
-  if (msg.channel.type !== "dm") {
-    msg.delete();
-  }
-  const channel = msg.channel.guild.name;
-  const user = msg.author.username;
+	deleteMessage(msg)
 
-  const create = payload.split(/\n/).reduce((arr, value) => {
-    arr.push({ user, channel, value });
-    return arr;
-  }, []);
+	const channel = msg.channel.guild.name
+	const user = msg.author.username
 
-  try {
-    await Message.bulkCreate(create);
-    msg.author.send(`👍 Recados inseridos!`);
-  } catch (err) {
-    console.log(err);
-    msg.author.send(
-      `😬 Não consegui inserir os recados, ${user}. Espere um pouquinho e tente novamente.`
-    );
-  }
-};
+	const create = payload.split(/\n/).reduce((arr, value) => {
+		arr.push({ user, channel, value })
+		return arr
+	}, [])
 
-module.exports = addMessages;
+	try {
+		await Message.bulkCreate(create)
+		msg.author.send(`:thumbsup: Recados inseridos!`)
+	} catch (err) {
+		console.log(err)
+		msg.author.send(
+			`:grimacing: Não consegui inserir os recados, ${user}. Espere um pouquinho e tente novamente.`
+		)
+	}
+}
+
+module.exports = addMessages

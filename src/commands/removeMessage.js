@@ -1,4 +1,5 @@
-const { Message } = require("../models");
+const { Message } = require('../models')
+const { deleteMessage } = require('../utils/helper')
 
 /**
  * removeMessage
@@ -6,25 +7,23 @@ const { Message } = require("../models");
  * @param {Message} msg Objeto da mensagem captada pelo robô
  */
 const removeMessage = async (id, msg) => {
-  if (!id) {
-    return false;
-  }
+	if (!id) {
+		return false
+	}
 
-  if (msg.channel.type !== "dm") {
-    msg.delete();
-  }
+	deleteMessage(msg)
 
-  const user = msg.author.username;
+	const user = msg.author.username
 
-  try {
-    await Message.destroy({ where: { id } });
-    msg.author.send(`👍 Recado removido!`);
-  } catch (err) {
-    console.log(err)
-    msg.author.send(
-      `😬 Não consegui remover o recado, ${user}. Espere um pouquinho e tente novamente.`
-    );
-  }
-};
+	try {
+		await Message.destroy({ where: { id } })
+		msg.author.send(`:thumbsup: Recado removido!`)
+	} catch (err) {
+		console.log(err)
+		msg.author.send(
+			`:grimacing: Não consegui remover o recado, ${user}. Espere um pouquinho e tente novamente.`
+		)
+	}
+}
 
-module.exports = removeMessage;
+module.exports = removeMessage

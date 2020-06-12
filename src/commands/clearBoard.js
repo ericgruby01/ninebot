@@ -1,26 +1,30 @@
-const { Message } = require("../models");
+const { Message } = require('../models')
+const { isDM } = require('../utils/helper')
 
 /**
  * clearBoard
  * @param {Message} msg Objeto da mensagem captada pelo robô
  */
-const clearBoard = async (msg) => {
-  if (msg.channel.type !== "dm") {
-    msg.delete();
-  }
+const clearBoard = async msg => {
+	const user = msg.author.username
 
-  const channel = msg.channel.guild.name;
-  const user = msg.author.username;
+	if (isDM(msg)) {
+		msg.author.send(
+			`:grimacing: Não é possível limpar um mural por DM, ${user}. Vá até um canal e digite o comando novamente.`
+		)
+	}
 
-  try {
-    await Message.destroy({ where: { channel } });
-    msg.channel.send(`✨ O mural de "${channel}" foi limpo!`);
-  } catch (err) {
-    console.log(err)
-    msg.channel.send(
-      `😬 Não consegui limpar o mural de recados, ${user}. Espere um pouquinho e tente novamente.`
-    );
-  }
-};
+	const channel = msg.channel.guild.name
 
-module.exports = clearBoard;
+	try {
+		await Message.destroy({ where: { channel } })
+		msg.channel.send(`✨ O mural de "${channel}" foi limpo!`)
+	} catch (err) {
+		console.log(err)
+		msg.channel.send(
+			`:grimacing: Não consegui limpar o mural de recados, ${user}. Espere um pouquinho e tente novamente.`
+		)
+	}
+}
+
+module.exports = clearBoard
