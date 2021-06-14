@@ -10,7 +10,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "cron-time-generator": "^1.2.0",
     "dayjs": "^1.9.3",
     "discord.js": "^12.2.0",
