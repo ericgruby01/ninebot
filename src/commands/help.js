@@ -45,6 +45,10 @@ const help = msg => {
 		'**:sparkles: » !limparMural**'
 	)
 	response.addField(
+		'**Mostro o mural de aniversários**',
+		'**:partying_face:  » !aniversarios**'
+	)
+	response.addField(
 		'**Procuro e mando um gif simpático no canal**',
 		'**:film_frames:  » !bomdia » !boatarde » !boanoite**'
 	)
