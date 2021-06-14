@@ -1,2 +1,5 @@
 node_modules
 .env
+*.zip
+*.lock
+package-lock.json
