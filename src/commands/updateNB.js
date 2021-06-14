@@ -1,5 +1,6 @@
 const API = require('../utils/api')
 const { validateCPF, validateNB, isConsigServer } = require('../utils/helper')
+const day = require('dayjs')
 
 /**
  * updateNB
@@ -28,7 +29,15 @@ const updateNB = async (nb, msg) => {
 		if (data.status === 0) {
 			return msg.channel.send(`NB: ${nb} ❌ ${data.mensagem}`)
 		}
-		return msg.channel.send(`NB: ${nb} ✅ ${data.mensagem}`)
+		if (data.mensagem.data_atualizacao) {
+			return msg.channel.send(
+				`NB: ${nb} ✅ Atualizado em ${day(
+					data.mensagem.data_atualizacao,
+					'YYYY-MM-DD'
+				).format('DD/MM/YYYY')}`
+			)
+		}
+		return msg.channel.send(`NB: ${nb} ✅ Atualizado!`)
 	} catch (err) {
 		console.log(err)
 		return msg.channel.send(
