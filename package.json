@@ -17,7 +17,7 @@
     "form-data": "^3.0.0",
     "mysql2": "^2.1.0",
     "node-cron": "^3.0.0",
-    "sequelize": "^5.21.12",
+    "sequelize": "^6.28.2",
     "tenorjs": "^1.0.7"
   },
   "devDependencies": {
